@@ -1,5 +1,9 @@
 <?php
 return [
+    "user-management" => "User Management",
+    "role"=>"Roles",
+    "products"=>"Products",
+    "users"=>"Users",
     "menu"=>"Menu",
     "dashboards"=>"Dashboards",
     "analytics"=>"Analytics",
