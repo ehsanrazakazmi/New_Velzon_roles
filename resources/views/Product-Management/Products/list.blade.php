@@ -20,56 +20,32 @@
         @endslot
     @endcomponent
 
-    <!-- yaha se shuru ho raha hai datatable -->
-
-
-
+    @include('partials.session')
+    
+    <!-- row starts -->
     <div class="row">
+        
+        <!-- Col starts -->
         <div class="col-lg-12">
-
             <div class="card">
-                
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title mb-0"><strong>Products</strong></h4>
                     <div class="col-sm-auto">
                         <div>
-                            @can('product-create')
-                            <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal"
-                                id="create-btn" data-bs-target="#showModal">
-                                <i class="ri-add-line align-bottom me-1"></i> Add
-                            </button>
+                            @can('Product create')
+                                <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal"
+                                    id="create-btn" data-bs-target="#showModal">
+                                    <i class="ri-add-line align-bottom me-1"></i> Add
+                                </button>
                             @endcan
                         </div>
                     </div>
                 </div>
-                
-
-                @if ($message = Session::get('success'))
-                    <div class="alert alert-success">
-                        <p>{{ $message }}</p>
-                    </div>
-                @endif
-                @if ($message = Session::get('alert'))
-                    <div class="alert alert-success">
-                        <p>{{ $message }}</p>
-                    </div>
-                @endif
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
 
                 <div class="card-body">
                     <table id="scroll-horizontal" class="table nowrap align-middle" style="width:100%">
                         <thead>
                             <tr>
-
                                 <th class="text-center">No</th>
                                 <th class="text-center">Name</th>
                                 <th class="text-center">Details</th>
@@ -79,33 +55,25 @@
                         <tbody>
                             @foreach ($products as $product)
                                 <tr>
-
                                     <td class="text-center">{{ ++$i }}</td>
                                     <td class="text-center">{{ $product->name }}</td>
                                     <td class="text-center">{{ $product->detail }}</td>
-
                                     <td>
                                         <div class="d-flex gap-2 justify-content-center">
-
                                             <div class="edit">
-                                                @can('product-edit')
-                                                <button class="btn btn-sm btn-success edit-item-btn"><a href="{{ route('product.edit',$product->id) }}" class="text-white"><i class="ri-edit-line"></i></a></button>
+                                                @can('Product edit')
+                                                    <button class="btn btn-sm btn-success edit-item-btn"><a href="{{ route('product.edit', encrypt($product->id)) }}" class="text-white"><i class="ri-edit-line"></i></a></button>
                                                 @endcan
                                             </div>
-
                                             <div class="remove">
-                                                @can('product-delete')
-                                                    
+                                                @can('Product delete')                                                    
                                                     <button class="btn btn-sm btn-danger remove-item-btn" data-bs-toggle="modal"
                                                     data-bs-target="#deleteRecordModal{{ $product->id }}"><i
                                                     class="ri-delete-bin-5-line"></i></button>
                                                 @endcan
-
-
-                                                {{-- <button class="btn btn-sm btn-danger remove-item-btn" ></button> --}}
-
                                             </div>
                                         </div>
+
                                         {{-- Modal Start   --}}
                                         <div class="modal fade zoomIn" id="deleteRecordModal{{ $product->id }}"
                                             tabindex="-1" aria-hidden="true">
@@ -113,73 +81,51 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close" id="btn-close"></button>
+                                                        aria-label="Close" id="btn-close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="mt-2 text-center">
-                                                            <script src="https://cdn.lordicon.com/lordicon-1.3.0.js"></script>
+                                                            <script src="https://cdn.lordicon.com/lordicon-1.4.1.js"></script>
                                                             <lord-icon
-                                                                src="https://cdn.lordicon.com/skkahier.json"
+                                                                src="https://cdn.lordicon.com/wpyrrmcq.json"
                                                                 trigger="hover"
                                                                 style="width:250px;height:250px">
                                                             </lord-icon>
                                                             <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
                                                                 <h4>Are you Sure ?</h4>
                                                                 <p class="text-muted mx-4 mb-0">Are you Sure You want to
-                                                                    Remove this Record ?</p>
+                                                                Remove this Record ?</p>
                                                             </div>
                                                         </div>
-
                                                         <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
                                                             <button type="button" class="btn w-sm btn-light"
                                                                 data-bs-dismiss="modal">Close</button>
-                                                                <form action="{{ route('product.destroy',$product->id) }}" method="POST">
+                                                                <form action="{{ route('product.destroy',encrypt($product->id)) }}" method="POST">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit" class="btn w-sm btn-danger">Delete it!</button>
-                                                                </form>
-
-                                                            {{-- {!! Form::open(['method' => 'DELETE','route' => ['product.destroy', $product->id],'style'=>'display:inline']) !!}
-                                                            {!! Form::submit('Delete it!', ['class' => 'btn w-sm btn-danger', 'id' => 'delete-record']) !!}
-                                                        {!! Form::close() !!} --}}
+                                                                </form>            
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                         {{-- Modal End --}}
-
-
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
-
                     </table>
                 </div>
             </div>
-            <!-- end col -->
         </div>
         <!-- end col -->
     </div>
     <!-- end row -->
-
-
-
-
-
-
-
-
-    <!-- yahan par khtm ho raha hai datatable -->
-
-
-
-
-
-
-
+    
+    
+    <!-- Modal for form store -->
+    
     <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -190,47 +136,35 @@
         
                 <form action="{{ route('product.store') }}" method="POST">
                     @csrf
-                    <div class="modal-body mx-4 my-2"> <!-- Adjust margin as needed -->
-                        <!-- Rounded Input -->
+                    <div class="modal-body mx-4 my-2">
                         <div class="mb-3">
                             <label for="name" class="form-label">Product Name</label>
                             <input type="text" class="form-control rounded-pill" id="name" name="name" placeholder="Enter Product Name">
                         </div>
-                        
-                        
-                        <!-- Example Textarea -->
                         <div>
                             <label for="detail" class="form-label">Details</label>
                             <textarea class="form-control rounded-pill" id="detail" name="detail" rows="3"></textarea>
                         </div>
-                        
-                        
                     </div>
                     <div class="modal-footer">
-                        <div class="hstack gap-2 justify-content-end">
-                            
-                            <button type="submit" class="btn btn-success" id="add-btn">Add Product</button>
-                            
+                        <div class="hstack gap-2 justify-content-end"> 
+                            <button type="submit" class="btn btn-success" id="add-btn">Add Product</button> 
                         </div>
                     </div>
                 </form>
-               
             </div>
         </div>
-        
-        </div>
     </div>
+    <!-- Modal for form store ends here .. -->
+
 @endsection
+
 @section('script')
     <script src="{{ URL::asset('assets/libs/prismjs/prismjs.min.js') }}"></script>
     <script src="{{ URL::asset('assets/libs/list.js/list.js.min.js') }}"></script>
     <script src="{{ URL::asset('assets/libs/list.pagination.js/list.pagination.js.min.js') }}"></script>
-
-    <!-- listjs init -->
     <script src="{{ URL::asset('assets/js/pages/listjs.init.js') }}"></script>
-
     <script src="{{ URL::asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
-
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -241,10 +175,7 @@
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-
     <script src="{{ URL::asset('assets/js/pages/datatables.init.js') }}"></script>
 
     <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>

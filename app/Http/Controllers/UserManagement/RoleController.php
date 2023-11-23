@@ -9,74 +9,51 @@ use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Validator;
+
 
 class RoleController extends Controller
 {
-
-
-     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-
-
-
-    //  assigning middlewares to specific routes
     function __construct()
     {
-         $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','show']]);
-         $this->middleware('permission:role-create', ['only' => ['store']]);
-         $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+        $this->middleware('auth');
     }
-
- /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
 
     public function index()
     {
-        // $roles = Role::whereNotIn('name', ['Admin'])->get();
+        
         $roles = Role::all();
         $permission = Permission::get();
-        
+    
         return view('User-Management.Roles.list', compact('roles','permission'));
     }
-    
-    public function sh_pr($id){
-        $role = Role::find($id);
-        $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")->where("role_has_permissions.role_id",$id)
-            ->get();
-            // dd($rolePermissions);
-        return view('User-Management.Roles.showpermission',compact('role','rolePermissions'));
-    }
-
-
 
     public function store(Request $request)
     {
-        $this->validate($request, [
+        //Preforming Validations
+        $validator = Validator::make($request->all(), [
             'name' => 'required|unique:roles,name',
             'permission' => 'required',
         ]);
-    
+
+        //Returning Error if Validation Fails
+        if ($validator->fails()) {
+            return redirect()->back()->with('warning', 'Duplicate Role Name Detected!');
+        }
+
         $role = Role::create([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
+            'name' => $request->name,
+            'description' => $request->description,
         ]);
-        $role->syncPermissions($request->input('permission'));
+
+        $role->syncPermissions($request->permission);
     
-        return redirect()->route('index.page')
-                        ->with('success','Role created successfully');
+        return redirect()->back()->with('success','Role created successfully');
     }
 
     public function edit($id) 
     {
+        $id = decrypt($id);
         $role = Role::find($id);
         $permission = Permission::get();
         $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
@@ -86,9 +63,9 @@ class RoleController extends Controller
         return view('User-Management.Roles.edit',compact('role','permission','rolePermissions'));
     }
 
-
     public function update(Request $request, $id)
     {
+        $id = decrypt($id);
         $this->validate($request, [
             'name' => 'required',
             'description' => 'nullable|string',
@@ -97,22 +74,18 @@ class RoleController extends Controller
     
         $role = Role::find($id);
         $role->name = $request->input('name');
-        $role->description = $request->input('description'); // Include description in the update
-
+        $role->description = $request->input('description');
         $role->save();
-        // dd($request->input('permission'));
+
         $role->syncPermissions($request->input('permission'));
     
-        return redirect()->route('index.page')
-                        ->with('success','Role updated successfully');
+        return redirect()->route('index.page')->with('success','Role updated successfully');
     }
 
     public function destroy($id)
     {
+        $id = decrypt($id);
         DB::table("roles")->where('id',$id)->delete();
-        return redirect()->route('index.page')
-                        ->with('success','Role deleted successfully');
+        return redirect()->route('index.page')->with('success','Role deleted successfully');
     }
-
-
 }

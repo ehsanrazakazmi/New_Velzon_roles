@@ -40,6 +40,12 @@
 
     <!-- JAVASCRIPT -->
     <?php echo $__env->make('layouts.vendor-scripts', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <script>
+        $(document).ready(function() {
+            $(".alert-dismissible").delay(5000).slideUp(300);
+            $(".alert-dismissible-long").delay(10000).slideUp(300);
+        });
+    </script>
 </body>
 
 </html>

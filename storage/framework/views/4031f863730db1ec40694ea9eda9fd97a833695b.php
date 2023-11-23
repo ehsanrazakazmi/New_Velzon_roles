@@ -41,19 +41,37 @@
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarDashboards">
                         <ul class="nav nav-sm flex-column">
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Role list')): ?>
+                                
                             <li class="nav-item">
                                 <a href="<?php echo e(route('index.page')); ?>" class="nav-link <?php echo e(request()->is('roles/*') ? 'active' : ''); ?>"><?php echo app('translator')->get('translation.role'); ?></a>
                             </li>
+                            <?php endif; ?>
+                           
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('User list')): ?>
                             <li class="nav-item">
-                                <a href="<?php echo e(route('product.index')); ?>" class="nav-link <?php echo e(request()->is('product/*') ? 'active' : ''); ?>"><?php echo app('translator')->get('translation.products'); ?></a>
+                                <a href="<?php echo e(route('user.index')); ?>" class="nav-link <?php echo e(request()->is('user/*') ? 'active' : ''); ?>"><?php echo app('translator')->get('translation.users'); ?></a>                  
                             </li>
+                            <?php endif; ?>
+                            
+                        </ul>
+                    </div>
+                </li> 
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarDashboards1" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="ri-product-hunt-fill"></i> <span>Product Management</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarDashboards1">
+                        <ul class="nav nav-sm flex-column">
+                            
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Product list')): ?>
+                                <li class="nav-item">
+                                    <a href="<?php echo e(route('product.index')); ?>" class="nav-link <?php echo e(request()->is('product/*') ? 'active' : ''); ?>"><?php echo app('translator')->get('translation.products'); ?></a>
+                                </li>
+                            <?php endif; ?>
                             
                                 
-                            <li class="nav-item">
-                                <?php if(auth()->user()->hasRole('Admin')): ?>
-                                <a href="<?php echo e(route('user.index')); ?>" class="nav-link <?php echo e(request()->is('user/*') ? 'active' : ''); ?>"><?php echo app('translator')->get('translation.users'); ?></a>
-                                <?php endif; ?>
-                            </li>
+                           
                             
                         </ul>
                     </div>

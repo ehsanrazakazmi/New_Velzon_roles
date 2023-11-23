@@ -16,14 +16,18 @@ class PermissionTableSeeder extends Seeder
     public function run()
     {
         DB::table('permissions')->insert([
-            ['name' => 'role-list','guard_name' => 'web', 'created_at' => now()],
-            ['name' => 'role-create','guard_name' => 'web', 'created_at' => now()],
-            ['name' => 'role-edit','guard_name' => 'web', 'created_at' => now()],
-            ['name' => 'role-delete','guard_name' => 'web','created_at' => now()],
-            ['name' => 'product-list','guard_name' => 'web','created_at' => now()],
-            ['name' => 'product-create','guard_name' => 'web','created_at' => now()],
-            ['name' => 'product-edit','guard_name' => 'web','created_at' => now()],                
-            ['name' => 'product-delete','guard_name' => 'web','created_at' => now()],
+            ['name' => 'Role list','guard_name' => 'web', 'created_at' => now()],
+            ['name' => 'Role create','guard_name' => 'web', 'created_at' => now()],
+            ['name' => 'Role edit','guard_name' => 'web', 'created_at' => now()],
+            ['name' => 'Role delete','guard_name' => 'web','created_at' => now()],
+            ['name' => 'Product list','guard_name' => 'web','created_at' => now()],
+            ['name' => 'Product create','guard_name' => 'web','created_at' => now()],
+            ['name' => 'Product edit','guard_name' => 'web','created_at' => now()],                
+            ['name' => 'Product delete','guard_name' => 'web','created_at' => now()],
+            ['name' => 'User list','guard_name' => 'web','created_at' => now()],
+            ['name' => 'User create','guard_name' => 'web','created_at' => now()],
+            ['name' => 'User edit','guard_name' => 'web','created_at' => now()],                
+            ['name' => 'User delete','guard_name' => 'web','created_at' => now()],
         ]);
     }
 }

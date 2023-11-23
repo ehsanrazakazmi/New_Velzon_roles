@@ -41,19 +41,37 @@
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarDashboards">
                         <ul class="nav nav-sm flex-column">
+                            @can('Role list')
+                                
                             <li class="nav-item">
                                 <a href="{{route('index.page')}}" class="nav-link {{ request()->is('roles/*') ? 'active' : '' }}">@lang('translation.role')</a>
                             </li>
+                            @endcan
+                           
+                            @can('User list')
                             <li class="nav-item">
-                                <a href="{{route('product.index')}}" class="nav-link {{ request()->is('product/*') ? 'active' : '' }}">@lang('translation.products')</a>
+                                <a href="{{route('user.index')}}" class="nav-link {{ request()->is('user/*') ? 'active' : '' }}">@lang('translation.users')</a>                  
                             </li>
+                            @endcan
+                            
+                        </ul>
+                    </div>
+                </li> 
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarDashboards1" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="ri-product-hunt-fill"></i> <span>Product Management</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarDashboards1">
+                        <ul class="nav nav-sm flex-column">
+                            
+                            @can('Product list')
+                                <li class="nav-item">
+                                    <a href="{{route('product.index')}}" class="nav-link {{ request()->is('product/*') ? 'active' : '' }}">@lang('translation.products')</a>
+                                </li>
+                            @endcan
                             
                                 
-                            <li class="nav-item">
-                                @if(auth()->user()->hasRole('Admin'))
-                                <a href="{{route('user.index')}}" class="nav-link {{ request()->is('user/*') ? 'active' : '' }}">@lang('translation.users')</a>
-                                @endif
-                            </li>
+                           
                             
                         </ul>
                     </div>

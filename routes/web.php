@@ -27,34 +27,34 @@ Route::group(['middleware' => ['auth']], function() {
     // Role functionality
 Route::controller(RoleController::class)->group(function(){
     Route::prefix('roles')->group(function () {
-        Route::get('/list','index')->name('index.page');
-        Route::get('/permissions/{id}','sh_pr')->name('role.pr');
-        Route::post('/store','store')->name('role.store');
-        Route::get('/edit/{id}', 'edit')->name('role.edit');
-        Route::patch('/update/{id}','update')->name('role.update');
-        Route::delete('/delete/{id}','destroy')->name('role.distroy');
+        Route::get('/list','index')->name('index.page')->middleware('can:Role list');
+        Route::get('/permissions/{id}','sh_pr')->name('role.pr')->middleware('can:Role list');
+        Route::post('/store','store')->name('role.store')->middleware('can:Role create');
+        Route::get('/edit/{id}', 'edit')->name('role.edit')->middleware('can:Role edit');
+        Route::patch('/update/{id}','update')->name('role.update')->middleware('can:Role edit');
+        Route::delete('/delete/{id}','destroy')->name('role.distroy')->middleware('can:Role delete');
     });
 });
-
 
     // user functionality
 Route::controller(UserController::class)->group(function(){
     Route::prefix('user')->group(function () {
-        Route::get('/list','index')->name('user.index');
-        Route::post('/store','store')->name('user.store');
-        Route::get('/edit/{id}', 'edit')->name('user.edit');
-        Route::patch('/update/{id}','update')->name('user.update');
-        Route::delete('/delete/{id}','destroy')->name('user.destroy');
+        Route::get('/list','index')->name('user.index')->middleware('can:User list');
+        Route::post('/store','store')->name('user.store')->middleware('can:User create');
+        Route::get('/edit/{id}', 'edit')->name('user.edit')->middleware('can:User edit');
+        Route::patch('/update/{id}','update')->name('user.update')->middleware('can:User edit');
+        Route::delete('/delete/{id}','destroy')->name('user.destroy')->middleware('can:User delete');
     });
 });
 
+// product functionality
 Route::controller(ProductController::class)->group(function(){
     Route::prefix('product')->group(function () {
-        Route::get('/list','index')->name('product.index');
-        Route::post('/store','store')->name('product.store');
-        Route::get('/edit/{id}', 'edit')->name('product.edit');
-        Route::patch('/update/{id}','update')->name('product.update');
-        Route::delete('/delete/{id}','destroy')->name('product.destroy');
+        Route::get('/list','index')->name('product.index')->middleware('can:Product list');
+        Route::post('/store','store')->name('product.store')->middleware('can:Product create');
+        Route::get('/edit/{id}', 'edit')->name('product.edit')->middleware('can:Product edit');
+        Route::patch('/update/{id}','update')->name('product.update')->middleware('can:Product edit');
+        Route::delete('/delete/{id}','destroy')->name('product.destroy')->middleware('can:Product delete');
     });
 });
 

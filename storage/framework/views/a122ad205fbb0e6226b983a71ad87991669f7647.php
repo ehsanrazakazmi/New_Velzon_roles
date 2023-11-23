@@ -20,90 +20,60 @@
         <?php $__env->endSlot(); ?>
     <?php echo $__env->renderComponent(); ?>
 
-    <!-- yaha se shuru ho raha hai datatable -->
+    <?php echo $__env->make('partials.session', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-
-
+    <!-- row starts from here -->
     <div class="row">
         <div class="col-lg-12">
-
             <div class="card">
+                
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title mb-0"><strong>Users</strong></h4>
                     <div class="col-sm-auto">
                         <div>
-                            <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal"
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('User create')): ?>                        
+                                <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal"
                                 id="create-btn" data-bs-target="#showModal">
-                                <i class="ri-add-line align-bottom me-1"></i> Add
-                            </button>
+                                    <i class="ri-add-line align-bottom me-1"></i> Add
+                                </button>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
 
-                <?php if($message = Session::get('success')): ?>
-                    <div class="alert alert-success">
-                        <p><?php echo e($message); ?></p>
-                    </div>
-                <?php endif; ?>
-                <?php if($message = Session::get('alert')): ?>
-                    <div class="alert alert-success">
-                        <p><?php echo e($message); ?></p>
-                    </div>
-                <?php endif; ?>
-                <?php if(count($errors) > 0): ?>
-                    <div class="alert alert-danger">
-                        <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                        <ul>
-                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <li><?php echo e($error); ?></li>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </ul>
-                    </div>
-                <?php endif; ?>
-
                 <div class="card-body">
-                    <table id="scroll-horizontal" class="table nowrap align-middle" style="width:100%">
-                        <thead>
-                            <tr>
-
-                                <th class="text-center">No</th>
-                                <th class="text-center">Name</th>
-                                <th class="text-center">Email</th>
-                                <th class="text-center">Roles</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('User list')): ?>
+                        <table id="scroll-horizontal" class="table nowrap align-middle" style="width:100%">
+                            <thead>
                                 <tr>
-
+                                    <th class="text-center">No</th>
+                                    <th class="text-center">Name</th>
+                                    <th class="text-center">Email</th>
+                                    <th class="text-center">Roles</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <tr>
                                     <td class="text-center"><?php echo e(++$i); ?></td>
                                     <td class="text-center"><?php echo e($user->name); ?></td>
                                     <td class="text-center"><?php echo e($user->email); ?></td>
-                                    <td class="text-center">
-                                        <?php if(!empty($user->getRoleNames())): ?>
-                                            <?php $__currentLoopData = $user->getRoleNames(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $v): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <label><?php echo e($v); ?></label>
-                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                        <?php endif; ?>
-                                    </td>
-
+                                    <td class="text-center"><?php echo e($user->roles[0]->name); ?></td>
                                     <td>
                                         <div class="d-flex gap-2 justify-content-center">
-
+                                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('User edit')): ?>
                                             <div class="edit">
-                                                <button class="btn btn-sm btn-success edit-item-btn"><a href="<?php echo e(route('user.edit',$user->id)); ?>" class="text-white"><i class="ri-edit-line"></i></a></button>
+                                                <button class="btn btn-sm btn-success edit-item-btn"><a href="<?php echo e(route('user.edit', encrypt( $user->id))); ?>" class="text-white"><i class="ri-edit-line"></i></a></button>
                                             </div>
-
+                                            <?php endif; ?>
+                                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('User delete')): ?> 
                                             <div class="remove">
                                                 <button class="btn btn-sm btn-danger remove-item-btn" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteRecordModal<?php echo e($user->id); ?>"><i
-                                                        class="ri-delete-bin-5-line"></i></button>
-
-
-                                                
-
+                                                data-bs-target="#deleteRecordModal<?php echo e($user->id); ?>"><i
+                                                class="ri-delete-bin-5-line"></i></button>
                                             </div>
+                                            <?php endif; ?>
                                         </div>
                                         
                                         <div class="modal fade zoomIn" id="deleteRecordModal<?php echo e($user->id); ?>"
@@ -112,13 +82,13 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close" id="btn-close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="mt-2 text-center">
-                                                            <script src="https://cdn.lordicon.com/lordicon-1.3.0.js"></script>
-                                                            <lord-icon
-                                                                src="https://cdn.lordicon.com/skkahier.json"
+                                                        aria-label="Close" id="btn-close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="mt-2 text-center">
+                                                                <script src="https://cdn.lordicon.com/lordicon-1.4.1.js"></script>
+                                                                <lord-icon
+                                                                src="https://cdn.lordicon.com/wpyrrmcq.json"
                                                                 trigger="hover"
                                                                 style="width:250px;height:250px">
                                                             </lord-icon>
@@ -126,58 +96,42 @@
                                                                 <h4>Are you Sure ?</h4>
                                                                 <p class="text-muted mx-4 mb-0">Are you Sure You want to
                                                                     Remove this Record ?</p>
+                                                                </div>
                                                             </div>
-                                                        </div>
 
-                                                        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                                                            <button type="button" class="btn w-sm btn-light"
+                                                            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                                                                <button type="button" class="btn w-sm btn-light"
                                                                 data-bs-dismiss="modal">Close</button>
+                                                                
+                                                                
+                                                                <?php echo Form::open(['method' => 'DELETE','route' => ['user.destroy', encrypt($user->id)],'style'=>'display:inline']); ?>
 
+                                                                <?php echo Form::submit('Delete it!', ['class' => 'btn w-sm btn-danger', 'id' => 'delete-record']); ?>
 
-                                                            <?php echo Form::open(['method' => 'DELETE','route' => ['user.destroy', $user->id],'style'=>'display:inline']); ?>
+                                                                <?php echo Form::close(); ?>
 
-                                                            <?php echo Form::submit('Delete it!', ['class' => 'btn w-sm btn-danger', 'id' => 'delete-record']); ?>
-
-                                                        <?php echo Form::close(); ?>
-
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        
-
-
-                                    </td>
-                                </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </tbody>
-
-                    </table>
+                                            
+                                            
+                                            
+                                            
+                                        </td>
+                                    </tr>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </tbody>
+                        </table>
+                    <?php endif; ?>
                 </div>
             </div>
             <!-- end col -->
-        </div>
-        <!-- end col -->
-    </div>
-    <!-- end row -->
+        </div><!-- end col -->
+    </div><!-- end row -->
 
-
-
-
-
-
-
-
-    <!-- yahan par khtm ho raha hai datatable -->
-
-
-
-
-
-
-
+    <!-- Modal starts here-->
     <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -196,8 +150,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">email</label>
-                        <?php echo Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control')); ?>
+                        <div class="form-icon">
+                            <?php echo Form::text('email', null, array('placeholder' => 'example@gmail.com','class' => 'form-control form-control-icon', 'id'=>'iconInput')); ?>
 
+                            <i class="ri-mail-unread-line"></i>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">password</label>
@@ -217,16 +174,18 @@
                 </div>
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
-                        <button type="submit" class="btn btn-success" id="add-btn">Add User</button>
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('User create')): ?>
+                            <button type="submit" class="btn btn-success" id="add-btn">Add User</button>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <?php echo Form::close(); ?>
 
             </div>
         </div>
-        
-        </div>
     </div>
+    <!-- Modal ends here-->
+
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('script'); ?>
     <script src="<?php echo e(URL::asset('assets/libs/prismjs/prismjs.min.js')); ?>"></script>
@@ -238,7 +197,7 @@
 
     <script src="<?php echo e(URL::asset('assets/libs/sweetalert2/sweetalert2.min.js')); ?>"></script>
 
-
+    <!-- Datatables CDN-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
