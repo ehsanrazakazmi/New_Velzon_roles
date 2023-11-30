@@ -139,11 +139,11 @@
                     <div class="modal-body mx-4 my-2">
                         <div class="mb-3">
                             <label for="name" class="form-label">Product Name</label>
-                            <input type="text" class="form-control rounded-pill" id="name" name="name" placeholder="Enter Product Name">
+                            <input type="text" class="form-control rounded-pill" id="name" name="name" placeholder="Enter Product Name" required>
                         </div>
                         <div>
                             <label for="detail" class="form-label">Details</label>
-                            <textarea class="form-control rounded-pill" id="detail" name="detail" rows="3"></textarea>
+                            <textarea class="form-control rounded-pill" id="detail" name="detail" rows="3" required></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

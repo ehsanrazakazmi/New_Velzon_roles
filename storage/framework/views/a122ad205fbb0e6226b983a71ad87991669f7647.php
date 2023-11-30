@@ -61,6 +61,7 @@
                                     <td class="text-center"><?php echo e($user->email); ?></td>
                                     <td class="text-center"><?php echo e($user->roles[0]->name); ?></td>
                                     <td>
+                                        
                                         <div class="d-flex gap-2 justify-content-center">
                                             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('User edit')): ?>
                                             <div class="edit">
@@ -76,51 +77,47 @@
                                             <?php endif; ?>
                                         </div>
                                         
-                                        <div class="modal fade zoomIn" id="deleteRecordModal<?php echo e($user->id); ?>"
-                                            tabindex="-1" aria-hidden="true">
+                                        <div class="modal fade zoomIn" id="deleteRecordModal<?php echo e($user->id); ?>"tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close" id="btn-close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mt-2 text-center">
+                                                            <script src="https://cdn.lordicon.com/lordicon-1.4.1.js"></script>
+                                                            <lord-icon
+                                                            src="https://cdn.lordicon.com/wpyrrmcq.json"
+                                                            trigger="hover"
+                                                            style="width:250px;height:250px">
+                                                        </lord-icon>
+                                                        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                                                            <h4>Are you Sure ?</h4>
+                                                            <p class="text-muted mx-4 mb-0">Are you Sure You want to
+                                                                Remove this Record ?</p>
+                                                            </div>
                                                         </div>
-                                                        <div class="modal-body">
-                                                            <div class="mt-2 text-center">
-                                                                <script src="https://cdn.lordicon.com/lordicon-1.4.1.js"></script>
-                                                                <lord-icon
-                                                                src="https://cdn.lordicon.com/wpyrrmcq.json"
-                                                                trigger="hover"
-                                                                style="width:250px;height:250px">
-                                                            </lord-icon>
-                                                            <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                                                                <h4>Are you Sure ?</h4>
-                                                                <p class="text-muted mx-4 mb-0">Are you Sure You want to
-                                                                    Remove this Record ?</p>
-                                                                </div>
-                                                            </div>
+                                                        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                                                            <button type="button" class="btn w-sm btn-light"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                            
+                                                            
+                                                            <?php echo Form::open(['method' => 'DELETE','route' => ['user.destroy', encrypt($user->id)],'style'=>'display:inline']); ?>
 
-                                                            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                                                                <button type="button" class="btn w-sm btn-light"
-                                                                data-bs-dismiss="modal">Close</button>
-                                                                
-                                                                
-                                                                <?php echo Form::open(['method' => 'DELETE','route' => ['user.destroy', encrypt($user->id)],'style'=>'display:inline']); ?>
+                                                            <?php echo Form::submit('Delete it!', ['class' => 'btn w-sm btn-danger', 'id' => 'delete-record']); ?>
 
-                                                                <?php echo Form::submit('Delete it!', ['class' => 'btn w-sm btn-danger', 'id' => 'delete-record']); ?>
+                                                            <?php echo Form::close(); ?>
 
-                                                                <?php echo Form::close(); ?>
-
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            
-                                            
-                                            
-                                            
-                                        </td>
-                                    </tr>
+                                        </div>
+                                       
+                                             
+                                    </td>
+                                </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </tbody>
                         </table>

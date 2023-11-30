@@ -37,12 +37,12 @@
                         <div class="form-floating">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Product Name</label>
-                                <input type="text" name="name" value="{{ $product->name }}" class="form-control" placeholder="Name">
+                                <input type="text" name="name" value="{{ $product->name }}" class="form-control" placeholder="Name" required>
                             </div>
                             
                             <div class="mb-3">
                                 <label for="detail" class="form-label">Details</label>
-                                <textarea class="form-control" style="height:150px" name="detail" placeholder="Detail">{{ $product->detail }}</textarea>
+                                <textarea class="form-control" style="height:150px" name="detail" placeholder="Detail" required>{{ $product->detail }}</textarea>
                             </div>
                             <button type="submit" class="btn rounded-pill btn-success waves-effect waves-light mt-3">Update</button>
                         </div>

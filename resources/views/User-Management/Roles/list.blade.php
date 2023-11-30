@@ -90,7 +90,7 @@
                                         </td>
 
                                         <td>
-                                            @if($role->name != 'Admin')
+                                            @if($role->name != 'Super Admin')
                                                 <div class="d-flex gap-2 justify-content-center">
                                                     @can('Role edit')
                                                         <div class="edit">
@@ -172,15 +172,15 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
-                            <input type="text" name="name" placeholder="Name" class="form-control">
+                            <input type="text" name="name" placeholder="Name" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Description</label>
-                            <textarea name="description" placeholder="Description" class="form-control"></textarea>
+                            <textarea name="description" placeholder="Description" class="form-control" required></textarea>
                         </div>
                         <div>
                             <label for="permissions" class="form-label">Permissions</label>
-                            <select class="js-example-basic-multiple" name="permission[]" multiple="multiple">
+                            <select class="js-example-basic-multiple" name="permission[]" multiple="multiple" required>
                                 @foreach($permission as $value)
                                     <option value="{{ $value->name }}">{{ $value->name }}</option>
                                 @endforeach

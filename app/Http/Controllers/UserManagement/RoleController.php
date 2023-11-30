@@ -21,7 +21,7 @@ class RoleController extends Controller
 
     public function index()
     {
-        
+        // gets the roles and permission throught the model
         $roles = Role::all();
         $permission = Permission::get();
     
@@ -38,7 +38,7 @@ class RoleController extends Controller
 
         //Returning Error if Validation Fails
         if ($validator->fails()) {
-            return redirect()->back()->with('warning', 'Duplicate Role Name Detected!');
+            return redirect()->back()->with('warning', 'Validation error');
         }
 
         $role = Role::create([
@@ -56,6 +56,8 @@ class RoleController extends Controller
         $id = decrypt($id);
         $role = Role::find($id);
         $permission = Permission::get();
+
+        // bellow will get the permissions through migrations
         $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
             ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
             ->all();

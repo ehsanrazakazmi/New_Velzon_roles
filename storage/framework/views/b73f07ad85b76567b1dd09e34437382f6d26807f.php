@@ -34,20 +34,20 @@
 
                                 <div class="mb-3">
                                     <label for="basicInput" class="form-label">Name: </label>
-                                    <?php echo Form::text('name', null, ['placeholder' => 'Name', 'class' => 'form-control']); ?>
+                                    <?php echo Form::text('name', null, ['placeholder' => 'Name', 'class' => 'form-control', 'required' => 'required']); ?>
 
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Description</label>
-                                    <?php echo Form::textarea('description', $role->description ?? null, ['placeholder' => 'Description', 'class' => 'form-control', 'rows' => '2' ]); ?>
+                                    <?php echo Form::textarea('description', $role->description ?? null, ['placeholder' => 'Description', 'class' => 'form-control', 'rows' => '2', 'required' => 'required' ]); ?>
 
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="choices-multiple-default" class="form-label text-muted">Permissions</label>
                                     <br>
-                                    <?php echo Form::select('permission[]', $permission->pluck('name', 'name'), $role->permissions->pluck('name'), ['class' => 'js-example-basic-multiple', 'multiple' => 'multiple']); ?>
+                                    <?php echo Form::select('permission[]', $permission->pluck('name', 'name'), $role->permissions->pluck('name'), ['class' => 'js-example-basic-multiple', 'multiple' => 'multiple', 'required' => 'required']); ?>
 
                                 </div>
 

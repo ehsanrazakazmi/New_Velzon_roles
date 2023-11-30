@@ -33,18 +33,18 @@
                             {!! Form::model($role, ['method' => 'PATCH', 'route' => ['role.update', encrypt($role->id)]]) !!}
                                 <div class="mb-3">
                                     <label for="basicInput" class="form-label">Name: </label>
-                                    {!! Form::text('name', null, ['placeholder' => 'Name', 'class' => 'form-control']) !!}
+                                    {!! Form::text('name', null, ['placeholder' => 'Name', 'class' => 'form-control', 'required' => 'required']) !!}
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Description</label>
-                                    {!! Form::textarea('description', $role->description ?? null, ['placeholder' => 'Description', 'class' => 'form-control', 'rows' => '2' ]) !!}
+                                    {!! Form::textarea('description', $role->description ?? null, ['placeholder' => 'Description', 'class' => 'form-control', 'rows' => '2', 'required' => 'required' ]) !!}
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="choices-multiple-default" class="form-label text-muted">Permissions</label>
                                     <br>
-                                    {!! Form::select('permission[]', $permission->pluck('name', 'name'), $role->permissions->pluck('name'), ['class' => 'js-example-basic-multiple', 'multiple' => 'multiple']) !!}
+                                    {!! Form::select('permission[]', $permission->pluck('name', 'name'), $role->permissions->pluck('name'), ['class' => 'js-example-basic-multiple', 'multiple' => 'multiple', 'required' => 'required']) !!}
                                 </div>
 
                                 <button type="submit" class="btn btn-success btn-sm mt-2">Update</button>

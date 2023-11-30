@@ -90,7 +90,7 @@
                                         </td>
 
                                         <td>
-                                            <?php if($role->name != 'Admin'): ?>
+                                            <?php if($role->name != 'Super Admin'): ?>
                                                 <div class="d-flex gap-2 justify-content-center">
                                                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Role edit')): ?>
                                                         <div class="edit">
@@ -172,15 +172,15 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
-                            <input type="text" name="name" placeholder="Name" class="form-control">
+                            <input type="text" name="name" placeholder="Name" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Description</label>
-                            <textarea name="description" placeholder="Description" class="form-control"></textarea>
+                            <textarea name="description" placeholder="Description" class="form-control" required></textarea>
                         </div>
                         <div>
                             <label for="permissions" class="form-label">Permissions</label>
-                            <select class="js-example-basic-multiple" name="permission[]" multiple="multiple">
+                            <select class="js-example-basic-multiple" name="permission[]" multiple="multiple" required>
                                 <?php $__currentLoopData = $permission; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($value->name); ?>"><?php echo e($value->name); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
