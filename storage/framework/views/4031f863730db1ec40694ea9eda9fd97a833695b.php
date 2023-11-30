@@ -57,6 +57,7 @@
                         </ul>
                     </div>
                 </li> 
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Product list')): ?>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarDashboards1" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                         <i class="ri-product-hunt-fill"></i> <span>Product Management</span>
@@ -64,18 +65,18 @@
                     <div class="collapse menu-dropdown" id="sidebarDashboards1">
                         <ul class="nav nav-sm flex-column">
                             
-                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Product list')): ?>
-                                <li class="nav-item">
-                                    <a href="<?php echo e(route('product.index')); ?>" class="nav-link <?php echo e(request()->is('product/*') ? 'active' : ''); ?>"><?php echo app('translator')->get('translation.products'); ?></a>
-                                </li>
-                            <?php endif; ?>
-                            
-                                
+                         
+                           <li class="nav-item">
+                               <a href="<?php echo e(route('product.index')); ?>" class="nav-link <?php echo e(request()->is('product/*') ? 'active' : ''); ?>"><?php echo app('translator')->get('translation.products'); ?></a>
+                           </li>
                            
-                            
-                        </ul>
+                           
+                           
+                           
+                       </ul>
                     </div>
                 </li> 
+                <?php endif; ?>
             </ul>
         </div>
         <!-- Sidebar -->

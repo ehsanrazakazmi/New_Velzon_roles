@@ -57,6 +57,7 @@
                         </ul>
                     </div>
                 </li> 
+                @can('Product list')
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarDashboards1" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                         <i class="ri-product-hunt-fill"></i> <span>Product Management</span>
@@ -64,18 +65,18 @@
                     <div class="collapse menu-dropdown" id="sidebarDashboards1">
                         <ul class="nav nav-sm flex-column">
                             
-                            @can('Product list')
-                                <li class="nav-item">
-                                    <a href="{{route('product.index')}}" class="nav-link {{ request()->is('product/*') ? 'active' : '' }}">@lang('translation.products')</a>
-                                </li>
-                            @endcan
-                            
-                                
+                         
+                           <li class="nav-item">
+                               <a href="{{route('product.index')}}" class="nav-link {{ request()->is('product/*') ? 'active' : '' }}">@lang('translation.products')</a>
+                           </li>
                            
-                            
-                        </ul>
+                           
+                           
+                           
+                       </ul>
                     </div>
                 </li> 
+                @endcan
             </ul>
         </div>
         <!-- Sidebar -->
